@@ -1,0 +1,22 @@
+server:
+   port: 10000
+
+eureka:
+   instance:
+      hostname: eureka-server
+      instance-id: ${spring.application.name}:${server.port} #指定实例名称
+   client:
+      serviceUrl:
+         #设置与EurekaServer交互的地址,多个地址使用,分割--集群下这边为其他服务ip  必须为域名
+         defaultZone: http://localhost:10000/eureka/
+      #表示是否将自己注册到EurekaServer,默认false--集群下为true
+      register-with-eureka: true
+      #表示是否从EurekaServer获取注册信息,默认true  集群下为true  false 不需要检索服务
+      fetch-registry: true
+   server:
+      #是否开启自我保护
+      enable-self-preservation: false  #开发环境关闭,生产打开
+      #服务注册表清理间隔(单位毫秒,默认60*1000)
+      eviction-interval-timer-in-ms: 60000
+
+

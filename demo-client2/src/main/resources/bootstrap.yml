@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: cloud-clinet #服务名称
+  profiles:
+    active: dev #使用的文件
+  rabbitmq:
+    host: 47.105.88.185
+    post: 5672
+    username: guest
+    password: guest
+  cloud:
+    stream:
+      bindings:
+        myInput:
+          #指定输入通道对应的主题名
+          destination: minestream
+          #指定该应用实例属于 stream 消费组
+          group: stream
+          consumer:
+            #通过该参数开启消费者分区功能
+            partitioned: true
+        myOutput:
+         #指定输出通道对应的主题名
+          destination: minestream
+          producer:
+            #通过该参数指定了分区键的表达式规则，可以根据实际的输出消息规则配置 SpEL 来生成合适的分区键
+            partitionKeyExpression: payload
+            partitionCount: 2
+      #该参数指定了当前消费者的总实例数量
+      instance-count: 2
+      #该参数设置了当前实例的索引号，从 0 开始，最大值为 spring.cloud.stream.instance-count 参数 - 1
+      instance-index: 0
+eureka:
+   client:
+      serviceUrl:
+         #设置与EurekaServer交互的地址,多个地址使用,分割--集群下这边为其他服务ip  必须为域名
+          defaultZone: http://localhost:10000/eureka/
+   instance:
+      prefer-ip-address:  true
+      ip-address: ${IP_ADDRESS:localhost}
+      instance-id: ${spring.application.name}:${server.port}
+
+
+---
+spring:
+  profiles: dev
+  cloud:
+    config:
+      discovery:
+        enabled: true #开启eureka发现服务
+        service-id: config-server
+      fail-fast: true

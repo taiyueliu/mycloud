@@ -1,0 +1,34 @@
+server:
+  port: 8887
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: http://47.105.88.185:1080/myproject/{application}.git
+          username: root
+          password: lty19940915
+          repos:
+            security: ##匹配config-client名为security开头的
+              pattern: security*/*
+              uri: http://47.105.88.185:1080/security/{application}.git
+              username: root
+              password: lty19940915
+            cloud:  ##匹配config-client名为cloud开头的
+              pattern: cloud*/*
+              uri: http://47.105.88.185:1080/cloud/{application}.git
+              username: root
+              password: lty19940915
+
+
+eureka:
+   client:
+      serviceUrl:
+         #设置与EurekaServer交互的地址,多个地址使用,分割--集群下这边为其他服务ip  必须为域名
+          defaultZone: http://localhost:10000/eureka/
+   instance:
+      prefer-ip-address:  true
+      ip-address: ${IP_ADDRESS:localhost}
+      instance-id: ${spring.application.name}:${server.port}
