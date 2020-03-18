@@ -1,4 +1,4 @@
-package com.csxm.demo.receiver;
+package com.csxm.client.receiver;
 
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.*;
@@ -24,7 +24,7 @@ public class RabbitReceiver {
      * @param hello
      */
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue("myDirectQueue1"),
+            value = @Queue("myDirectQueue"),
             exchange = @Exchange(value = "myDirectExchange",type = ExchangeTypes.DIRECT),
             key = "mine.direct"
 
@@ -48,7 +48,7 @@ public class RabbitReceiver {
     @RabbitListeners({
             @RabbitListener(
                     bindings = @QueueBinding(
-                            value = @Queue("myFanoutQueue-three"),
+                            value = @Queue("myFanoutQueue-one"),
                             exchange = @Exchange(value = "myFanoutExchange", type = ExchangeTypes.FANOUT),
                             key = "key.one")),
 

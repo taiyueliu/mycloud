@@ -36,7 +36,7 @@ public class Provider2Controller {
 
     @GetMapping("/getMsgFromProvider1")
     public void getMsgFromProvider1(){
-        send1();
+        send3();
     }
 
 
@@ -62,6 +62,14 @@ public class Provider2Controller {
     private void send2() {
         //(交换机,routingKey,消息内容),routingKey随意
         amqpTemplate.convertAndSend("myFanoutExchange","key.one","this is a message3");
+    }
+
+    /**
+     * Topic 主题交换机
+     */
+    private void send3() {
+        //模拟某人在商店买彩票中奖了
+        amqpTemplate.convertAndSend("news-exchange","province.city.street.shop","有人中了大奖");
     }
 
 }
